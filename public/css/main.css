@@ -142,3 +142,41 @@ header {
     min-height: 40px;
     min-width: 100px;
 }
+.register-popup-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    position: absolute;
+    align-items: center;
+    background-color: antiquewhite;
+    z-index: 5;
+    width: 600px;
+    min-height: 400px;
+    max-width: 600px;
+}
+.register-form-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+.register-form-wrap form  {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+.register-form-wrap form input {
+    width: 100%;
+    max-width: 300px;
+}
+.register-btn-wrap {
+    margin: 10px 0;
+}
+.form-item {
+    margin-bottom: 2px;
+}

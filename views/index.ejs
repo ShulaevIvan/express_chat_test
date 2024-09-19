@@ -1,47 +1,57 @@
 <%- include('./includes/header') %>
-<div class="chat-window-main-wrap">
-    <div class="chat-window-main-row">
-        <div class="chat-messages-wrap">
-            <div class="chat-message-wrap">
-                <div class="chat-message-username">
-                    <span>User 1</span>
+<% if (user) { %>
+    <div class="chat-window-main-wrap">
+        <div class="chat-window-main-row">
+            <div class="chat-messages-wrap">
+                <div class="chat-message-wrap">
+                    <div class="chat-message-username">
+                        <span>User 1</span>
+                    </div>
+                    <div class="chat-message-text">
+                        <p>asdassdasdasdasd</p>
+                    </div>
                 </div>
-                <div class="chat-message-text">
-                    <p>asdassdasdasdasd</p>
-                </div>
-            </div>
-            <div class="chat-message-wrap">
-                <div class="chat-message-username">
-                    <span>User 1</span>
-                </div>
-                <div class="chat-message-text">
-                    <p>asdassdasdasdasd</p>
-                </div>
-            </div>
-        </div>
-        <div class="chat-window-users-wrap">
-            <div class="user-item-wrap">
-                <div class="user-item-username">
-                    Username
+                <div class="chat-message-wrap">
+                    <div class="chat-message-username">
+                        <span>User 1</span>
+                    </div>
+                    <div class="chat-message-text">
+                        <p>asdassdasdasdasd</p>
+                    </div>
                 </div>
             </div>
-            <div class="user-item-wrap">
-                <div class="user-item-username">
-                    Username
+            <div class="chat-window-users-wrap">
+                <div class="user-item-wrap">
+                    <div class="user-item-username">
+                        Username
+                    </div>
+                </div>
+                <div class="user-item-wrap">
+                    <div class="user-item-username">
+                        Username
+                    </div>
+                </div>
+                <div class="user-item-wrap">
+                    <div class="user-item-username">
+                        Username
+                    </div>
                 </div>
             </div>
-            <div class="user-item-wrap">
-                <div class="user-item-username">
-                    Username
+            <div class="keyboard-wrap">
+                <textarea></textarea>
+                <div class="send-btn-wrap">
+                    <button>Send</button>
                 </div>
-            </div>
-        </div>
-        <div class="keyboard-wrap">
-            <textarea></textarea>
-            <div class="send-btn-wrap">
-                <button>Send</button>
             </div>
         </div>
     </div>
-</div>
+<% } else { %>
+    <div class="hello-mainpage-wrap">
+        <div class="hello-text-wrap">
+            <h1>Hello guset,</h1>
+            <p>You must <a href="/login">login</a> or <a href="/register">register</a></p>
+        </div>
+    </div>
+<% } %>
+
 <%- include('./includes/footer') %>

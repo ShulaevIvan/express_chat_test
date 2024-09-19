@@ -2,16 +2,29 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io');
+const socketIO = require('socket.io');
+const { Server } = require("socket.io");
+const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
+app.use('/', authRouter);
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+});
 
 server.listen(PORT);
 console.log(`server started at: \n ${HOST}:${PORT}`);
