@@ -2,6 +2,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const popupWrap = document.querySelector('.register-popup-wrap');
     const registerForm = popupWrap.querySelector('form')
     const formInputs = Array.from(popupWrap.querySelectorAll('.form-item-input'));
+    const messageForm = registerForm.querySelector('.message-text');
     const sendData = {};
 
     const inputHandler = (e, input) => {
@@ -10,6 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     const sendHandler = async (url, sendingData) => {
+        messageForm.textContent = '';
         await fetch(`${url}`, {
             method: 'POST',
             body: JSON.stringify(sendingData),
@@ -17,9 +19,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === 201) {
+                formInputs.forEach((item) => item.value = '');
+            }
+            return response.json();
+        })
         .then((data) => {
-            formInputs.forEach((item) => item.value = '');
+            if (data && data.status === 'user exists') {
+                messageForm.textContent = data.status;
+            }
         })
     };
 
@@ -33,6 +42,5 @@ window.addEventListener('DOMContentLoaded', () => {
             sendHandler('/register', sendData);
         }
     });
-    form.addEventListener
 
 });
