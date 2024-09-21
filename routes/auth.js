@@ -7,8 +7,23 @@ router.get('/register', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.render('login', {url: 'login'});
-})
+    if (req.user) return res.redirect('/');
+    res.render('login', {user: req.user, url: 'login'});
+});
+
+router.get('/logout', (req, res) => {
+    try {
+        req.logout((user, err) => {
+            if(err) next(err);
+            res.redirect('/');
+        });
+    }
+    catch(err) {
+        res.status(500);
+        console.log('err (GET) logout');
+        console.log(err);
+    }
+});
 
 router.post('/register', async (req, res) => {
     try {
@@ -32,15 +47,10 @@ router.post('/register', async (req, res) => {
    
 });
 
-router.post('/login',  passport.authenticate('local', 
-    { 
-        successRedirect: '/',
-        failureRedirect: '/login',
-    }),
+router.post('/login',  passport.authenticate('local', { failureRedirect: '/login' }),
     async (req, res) => {
         try {
-            res.status(301);
-            res.redirect('/');
+            res.json({status: 'ok'});
         }
         catch(err) {
             res.status(500);

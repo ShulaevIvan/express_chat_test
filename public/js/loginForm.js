@@ -6,7 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const sendBtn = loginWrap.querySelector('.login-enter-btn');
 
     const sendHandler = async (url, sendData) => {
-        console.log(url)
         await fetch(`${url}`, {
             method: 'POST',
             body: JSON.stringify(sendData),
@@ -15,8 +14,12 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         })
         .then((response) => {
-            console.log(response)
-        })
+            if (!response.redirected) {
+                return window.location.href = '/';
+                
+            }
+            window.location.href = '/login';
+        });
     };
 
     sendBtn.addEventListener('click', (e) => {

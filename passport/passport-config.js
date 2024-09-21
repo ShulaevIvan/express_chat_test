@@ -14,9 +14,9 @@ const verifyPassword = (user, password) => {
   return user.password === password;
 };
 
-passport.use(new LocalStrategy({usernameField: 'email'},
+passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
     async (email, password, done) => {
-        await User.findOne({email: email})
+        User.findOne({email: email})
         .then((user) => {
             try {
                 if (!user) return done(null, false);

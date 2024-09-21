@@ -2,10 +2,8 @@ const path = require('path');
 const env = require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const passport = require('passport');
-const strategy = require('./passport/passport-config');
 const cors = require('cors');
-// const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 const app = express();
 const server = require('http').createServer(app);
 const socketIO = require('socket.io');
@@ -15,7 +13,12 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
-
+const passport = require('passport');
+const strategy = require('./passport/passport-config');
+const sessionStore = new MongoDBStore({
+  uri: process.env.DATABASE_URL,
+  collection: 'userSessions'
+});
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -27,12 +30,13 @@ app.use(session({
   cookie: {
       path: '/',
       expires: true,
-      maxAge: 10000,
+      maxAge: 60 * 60 * 1000,
       secure: false,
       httpOnly: true
   },
   resave: false,
   saveUninitialized: true,
+  store: sessionStore
 }));
 
 app.use(passport.initialize());

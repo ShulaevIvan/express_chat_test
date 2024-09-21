@@ -1,4 +1,14 @@
-<%- include('./includes/header') %>
+<%- include('./includes/header')%>
+
+<% if (user) { %>
+    <ul class="main-menu">
+        <h4>hello <%= user.username %></h4>
+        <li><a href="/logout" class="loginBtn">logout</a></li>
+    </ul>
+<% } else { %>
+<%- include('./loginPanel') %>
+<% } %>
+
 <% if (user) { %>
     <div class="chat-window-main-wrap">
         <div class="chat-window-main-row">
