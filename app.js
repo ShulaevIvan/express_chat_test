@@ -6,13 +6,14 @@ const cors = require('cors');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const app = express();
 const server = require('http').createServer(app);
-const socketIO = require('socket.io');
 const { Server } = require("socket.io");
-const io = new Server(server);
+module.exports = io = new Server(server);
+const socket = require('./socket/socket');
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/api');
 const passport = require('passport');
 const strategy = require('./passport/passport-config');
 const sessionStore = new MongoDBStore({
@@ -34,8 +35,8 @@ app.use(session({
       secure: false,
       httpOnly: true
   },
-  resave: false,
-  saveUninitialized: true,
+  resave:true,
+  saveUninitialized:true,
   store: sessionStore
 }));
 
@@ -43,13 +44,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/', authRouter);
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
-});
+app.use('/api/', apiRouter);
 
 server.listen(PORT);
 console.log(`server started at: \n ${HOST}:${PORT}`);

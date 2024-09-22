@@ -11,18 +11,35 @@ router.get('/login', (req, res) => {
     res.render('login', {user: req.user, url: 'login'});
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', async (req, res) => {
     try {
-        req.logout((user, err) => {
-            if(err) next(err);
-            res.redirect('/');
-        });
+        await User.updateOne({ _id: req.user.id }, { connected: false })
+        .then((data) => {
+            req.logout((user, err) => {
+                if(err) next(err);
+                res.redirect('/');
+            });
+        })
+        
     }
     catch(err) {
         res.status(500);
         console.log('err (GET) logout');
         console.log(err);
     }
+});
+
+router.get('/check-user', async (req, res) => {
+    if (req.isAuthenticated()) {
+        return new Promise((resolve, reject) => {
+            User.findOne({_id: req.user.id})
+            .then((data) => {
+               resolve(res.json({status: req.isAuthenticated(), userId: data._id}))
+            });
+        })
+    }
+    return res.json({status: req.isAuthenticated()});
+
 });
 
 router.post('/register', async (req, res) => {
@@ -50,7 +67,12 @@ router.post('/register', async (req, res) => {
 router.post('/login',  passport.authenticate('local', { failureRedirect: '/login' }),
     async (req, res) => {
         try {
-            res.json({status: 'ok'});
+            return new Promise((resolve, reject) => {
+                User.updateOne({ _id: req.user.id }, { connected: true })
+                .then((data) => {
+                    resolve(res.json({status: 'ok', userId: data._id}))
+                });
+            });
         }
         catch(err) {
             res.status(500);

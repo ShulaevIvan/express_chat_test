@@ -1,4 +1,4 @@
-<%- include('./includes/header')%>
+<%- include('./includes/header', {user: user})%>
 
 <% if (user) { %>
     <ul class="main-menu">
@@ -30,27 +30,11 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-window-users-wrap">
-                <div class="user-item-wrap">
-                    <div class="user-item-username">
-                        Username
-                    </div>
-                </div>
-                <div class="user-item-wrap">
-                    <div class="user-item-username">
-                        Username
-                    </div>
-                </div>
-                <div class="user-item-wrap">
-                    <div class="user-item-username">
-                        Username
-                    </div>
-                </div>
-            </div>
+            <div class="chat-window-users-wrap"></div>
             <div class="keyboard-wrap">
-                <textarea></textarea>
+                <textarea class="chat-main-input"></textarea>
                 <div class="send-btn-wrap">
-                    <button>Send</button>
+                    <button class="chat-send-btn">Send</button>
                 </div>
             </div>
         </div>

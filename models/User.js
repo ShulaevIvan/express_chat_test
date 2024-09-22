@@ -13,6 +13,13 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    connected: {
+        type: Boolean,
+        required: false
+    },
+    chatId: {
+        type: String
     }
 });
 
